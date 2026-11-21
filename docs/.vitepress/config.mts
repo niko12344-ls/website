@@ -51,11 +51,10 @@ export default defineConfig({
       }
     },
     nav: [
-      { text: '首页', link: '/' },
-      { text: '开始使用', link: '/guide/getting-started' },
-      { text: '项目记录', link: '/projects/' },
-      { text: '关于', link: '/about' }
-    ],
+  { text: '首页', link: '/' },
+  { text: '使用指南', link: '/guide/getting-started' },
+  { text: '项目记录', link: '/projects/' }
+],
     sidebar: [
       {
         text: '概览',
