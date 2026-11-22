@@ -1,31 +1,125 @@
+
 import { defineConfig } from 'vitepress'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+// 文档目录
+const docsDir = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../..'
+)
+
+const wikiDir = path.join(docsDir, 'wiki')
+
+// 获取 Markdown 标题
+function getTitle(file: string, fallback: string): string {
+  const content = fs.readFileSync(file, 'utf-8')
+
+  const frontmatter = content.match(
+    /^---\s*\n([\s\S]*?)\n---/
+  )
+
+  const titleMatch = frontmatter?.[1].match(
+    /^title:\s*(?:"([^"]+)"|'([^']+)'|(.+))\s*$/m
+  )
+
+  if (titleMatch) {
+    return (titleMatch[1] || titleMatch[2] || titleMatch[3]).trim()
+  }
+
+  const heading = content.match(/^#\s+(.+)$/m)
+
+  return heading?.[1].trim() || fallback
+}
+
+// 自动生成维基侧边栏
+function generateWikiSidebar(dir = wikiDir): any[] {
+  if (!fs.existsSync(dir)) return []
+
+  return fs.readdirSync(dir, { withFileTypes: true })
+    .filter(item =>
+      !item.name.startsWith('.') &&
+      item.name !== 'index.md'
+    )
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(item => {
+      const fullPath = path.join(dir, item.name)
+
+      // 文件夹
+      if (item.isDirectory()) {
+        const indexFile = path.join(fullPath, 'index.md')
+
+        const relativePath = path.relative(wikiDir, fullPath)
+          .split(path.sep)
+          .join('/')
+
+        return {
+          text: fs.existsSync(indexFile)
+            ? getTitle(indexFile, item.name)
+            : item.name,
+
+          ...(fs.existsSync(indexFile)
+            ? { link: `/wiki/${relativePath}/` }
+            : {}),
+
+          collapsed: true,
+          items: generateWikiSidebar(fullPath)
+        }
+      }
+
+      // Markdown 文件
+      if (!item.name.endsWith('.md')) return null
+
+      const name = item.name.replace(/\.md$/, '')
+
+      const relativePath = path.relative(wikiDir, fullPath)
+        .split(path.sep)
+        .join('/')
+        .replace(/\.md$/, '')
+
+      return {
+        text: getTitle(fullPath, name),
+        link: `/wiki/${relativePath}`
+      }
+    })
+    .filter(item => item !== null)
+}
 
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Liang Wiki',
   description: '个人知识库与项目',
+
   cleanUrls: false,
   lastUpdated: true,
+
   markdown: {
     lineNumbers: true,
     anchor: {
       permalink: true
     }
   },
+
   themeConfig: {
     logo: undefined,
-    siteTitle: '个人文档',
+    siteTitle: 'Liang Wiki',
+
     outline: {
       label: '本页目录',
       level: [2, 3]
     },
+
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
     },
+
     lastUpdated: {
       text: '最后更新于'
     },
+
+    // 全文搜索
     search: {
       provider: 'local',
       options: {
@@ -50,49 +144,63 @@ export default defineConfig({
         }
       }
     },
+
+    // 顶部导航
     nav: [
-  { text: '首页', link: '/' },
-  { text: '使用指南', link: '/guide/getting-started' },
-  { text: '项目记录', link: '/projects/' },
-  { text: '维基', link: '/wiki/' }
-],
-    sidebar: [
-      {
-        text: '概览',
-        items: [
-          { text: '文档首页', link: '/' },
-          { text: '关于本站', link: '/about' }
-        ]
-      },
-      {
-        text: '使用指南',
-        collapsed: false,
-        items: [
-          { text: '开始使用', link: '/guide/getting-started' },
-          { text: 'Markdown 写作', link: '/guide/markdown' }
-        ]
-      },
-      {
-        text: '项目记录',
-        collapsed: false,
-        items: [
-          { text: '项目索引', link: '/projects/' },
-          { text: '示例项目', link: '/projects/example' }
-        ]
-      },
-	  {
-        text: '维基',
-        collapsed: false,
-        items: [
-          { text: '维基', link: '/wiki/' },
-          { text: '概述', link: '/wiki/example' }
-        ]
-      },
+      { text: '首页', link: '/' },
+      { text: '使用指南', link: '/guide/getting-started' },
+      { text: '项目记录', link: '/projects/' },
+      { text: '维基', link: '/wiki/' },
+      { text: '关于', link: '/about' }
     ],
+
+    // 侧边栏
+    sidebar: {
+      // 维基：自动扫描
+      '/wiki/': [
+        {
+          text: '维基',
+          collapsed: false,
+          items: [
+            { text: '维基首页', link: '/wiki/' },
+            ...generateWikiSidebar()
+          ]
+        }
+      ],
+
+      // 原有文档导航：保留
+      '/': [
+        {
+          text: '概览',
+          items: [
+            { text: '文档首页', link: '/' },
+            { text: '关于本站', link: '/about' }
+          ]
+        },
+        {
+          text: '使用指南',
+          collapsed: false,
+          items: [
+            { text: '开始使用', link: '/guide/getting-started' },
+            { text: 'Markdown 写作', link: '/guide/markdown' }
+          ]
+        },
+        {
+          text: '项目记录',
+          collapsed: false,
+          items: [
+            { text: '项目索引', link: '/projects/' },
+            { text: '示例项目', link: '/projects/example' }
+          ]
+        }
+      ]
+    },
+
     socialLinks: [],
+
     footer: {
       message: '由 VitePress 驱动',
-      copyright: '个人文档'
+      copyright: 'Liang Wiki'
     }
   }
 })
