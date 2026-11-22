@@ -79,7 +79,15 @@ export default defineConfig({
           { text: '项目索引', link: '/projects/' },
           { text: '示例项目', link: '/projects/example' }
         ]
-      }
+      },
+					{
+        text: '项目记录',
+        collapsed: false,
+        items: [
+          { text: '维基', link: '/wiki/' },
+          { text: '示例项目', link: '/wiki/example' }
+        ]
+      },
     ],
     socialLinks: [],
     footer: {
