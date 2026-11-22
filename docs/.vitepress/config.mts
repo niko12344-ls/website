@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 // 文档目录
 const docsDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  '../..'
+  '..'
 )
 
 const wikiDir = path.join(docsDir, 'wiki')
@@ -25,7 +25,10 @@ function getTitle(file: string, fallback: string): string {
   )
 
   if (titleMatch) {
-    return (titleMatch[1] || titleMatch[2] || titleMatch[3]).trim()
+    const title =
+      titleMatch[1] ?? titleMatch[2] ?? titleMatch[3]
+
+    if (title) return title.trim()
   }
 
   const heading = content.match(/^#\s+(.+)$/m)
@@ -49,22 +52,29 @@ function generateWikiSidebar(dir = wikiDir): any[] {
       // 文件夹
       if (item.isDirectory()) {
         const indexFile = path.join(fullPath, 'index.md')
+        const hasIndex = fs.existsSync(indexFile)
+        const children = generateWikiSidebar(fullPath)
+
+        // 忽略没有 Markdown 内容的空文件夹
+        if (!hasIndex && children.length === 0) return null
 
         const relativePath = path.relative(wikiDir, fullPath)
           .split(path.sep)
           .join('/')
 
         return {
-          text: fs.existsSync(indexFile)
+          text: hasIndex
             ? getTitle(indexFile, item.name)
             : item.name,
 
-          ...(fs.existsSync(indexFile)
+          // 有 index.md 时，文件夹名称可以点击跳转
+          ...(hasIndex
             ? { link: `/wiki/${relativePath}/` }
             : {}),
 
+          // 保留独立的展开/收起按钮
           collapsed: true,
-          items: generateWikiSidebar(fullPath)
+          items: children
         }
       }
 
