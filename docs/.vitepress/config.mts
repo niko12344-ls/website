@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: '个人文档',
-  description: '个人知识库与项目文档',
+  title: 'Liang Wiki',
+  description: '个人知识库与项目',
   cleanUrls: false,
   lastUpdated: true,
   markdown: {
@@ -79,7 +79,15 @@ export default defineConfig({
           { text: '项目索引', link: '/projects/' },
           { text: '示例项目', link: '/projects/example' }
         ]
-      }
+      },
+	  {
+        text: '维基',
+        collapsed: false,
+        items: [
+          { text: '维基', link: '/wiki/' },
+          { text: '概述', link: '/wiki/example' }
+        ]
+      },
     ],
     socialLinks: [],
     footer: {
