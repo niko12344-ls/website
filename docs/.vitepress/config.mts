@@ -53,8 +53,8 @@ export default defineConfig({
     nav: [
   { text: '首页', link: '/' },
   { text: '使用指南', link: '/guide/getting-started' },
-  { text: '项目记录', link: '/projects/' }
-	 { text: '维基', link: '/wiki/' }
+  { text: '项目记录', link: '/projects/' },
+  { text: '维基', link: '/wiki/' }
 ],
     sidebar: [
       {
