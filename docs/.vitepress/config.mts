@@ -123,6 +123,12 @@ export default defineConfig({
       text: '最后更新于'
     },
 
+    // 关闭上一篇/下一篇按钮
+    docFooter: {
+      prev: false,
+      next: false
+    },
+
     // 全文搜索
     search: {
       provider: 'local',
