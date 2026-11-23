@@ -157,8 +157,6 @@ export default defineConfig({
     // 顶部导航
     nav: [
       { text: '首页', link: '/' },
-      { text: '使用指南', link: '/guide/getting-started' },
-      { text: '项目记录', link: '/projects/' },
       { text: '维基', link: '/wiki/' },
       { text: '关于', link: '/about' }
     ],
@@ -169,7 +167,7 @@ export default defineConfig({
       '/wiki/': [
         {
           text: '维基',
-          collapsed: true,   // ← 改为默认不展开
+          collapsed: true,
           items: [
             { text: '维基首页', link: '/wiki/' },
             ...generateWikiSidebar()
@@ -181,35 +179,19 @@ export default defineConfig({
       '/': [
         {
           text: '概览',
-          collapsed: true,   // ← 改为默认不展开
+          collapsed: false,
           items: [
             { text: '文档首页', link: '/' },
             { text: '关于本站', link: '/about' }
           ]
         },
-        // 新增：维基分组
+        // 维基分组
         {
           text: '维基',
-          collapsed: true,   // ← 改为默认不展开
+          collapsed: true,
           items: [
             { text: '维基首页', link: '/wiki/' },
             ...generateWikiSidebar()
-          ]
-        },
-        {
-          text: '使用指南',
-          collapsed: true,   // ← 改为默认不展开
-          items: [
-            { text: '开始使用', link: '/guide/getting-started' },
-            { text: 'Markdown 写作', link: '/guide/markdown' }
-          ]
-        },
-        {
-          text: '项目记录',
-          collapsed: true,   // ← 改为默认不展开
-          items: [
-            { text: '项目索引', link: '/projects/' },
-            { text: '示例项目', link: '/projects/example' }
           ]
         }
       ]
