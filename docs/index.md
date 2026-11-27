@@ -29,7 +29,7 @@ onMounted(() => {
   }
 
   const script = document.createElement('script')
-  script.src = 'https://cdn.jsdelivr.net/npm/twikoo@latest/dist/twikoo.min.js'
+  script.src = 'https://cdn.jsdelivr.net/npm/twikoo@2.0.17/dist/twikoo.min.js'
   script.onload = initTwikoo
   document.head.appendChild(script)
 })
