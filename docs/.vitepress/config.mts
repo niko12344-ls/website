@@ -182,8 +182,9 @@ export default defineConfig({
           text: '概览',
           collapsed: false,
           items: [
-            { text: '文档首页', link: '/' },
-            { text: '关于本站', link: '/about' }
+            { text: '维基首页', link: '/' },
+            { text: '关于本站', link: '/about' },
+										{ text: '写作方法', link: '/markdown' }
           ]
         },
         // 维基分组
