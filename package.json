@@ -12,6 +12,6 @@
     "vitepress": "1.6.4"
   },
   "dependencies": {
-    "twikoo": "^2.0.17"
+    "twikoo": "^2.0.18"
   }
 }
