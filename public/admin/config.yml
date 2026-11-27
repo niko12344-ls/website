@@ -1,0 +1,19 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# 关键：启用编辑工作流，保存不直接进 main
+publish_mode: editorial_workflow
+
+media_folder: "public/wiki/images"
+public_folder: "/wiki/images"
+
+collections:
+  - name: "wiki"
+    label: "维基页面"
+    folder: "wiki"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "正文", name: "body", widget: "markdown" }
