@@ -1,4 +1,6 @@
-::: warning 此页面与 ralsei无任何关系 如需查看请访问[deltarune.wiki](https://deltarune.wiki/) :::
+::: warning 注意
+此页面与 ralsei无任何关系 如需查看请访问[deltarune.wiki](https://deltarune.wiki/) 
+:::
 
 # 关于本站
 
