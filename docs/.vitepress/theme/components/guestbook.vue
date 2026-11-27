@@ -13,7 +13,7 @@ onMounted(async () => {
   const twikoo = await import('twikoo')
   
   twikoo.init({
-    envId: 'https://你的自建地址', // ← 换成你的真实地址
+    envId: 'https://twikoo.123472.xyz', // ← 换成你的真实地址
     el: '#tcomment',
     path: '/guestbook/',           // 固定路径，保证数据独立
     lang: 'zh-CN'
