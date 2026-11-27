@@ -1,4 +1,5 @@
-此页面与 ralsei无任何关系 如需查看请访问[deltarune.wiki](https://deltarune.wiki/)
+::: warning 此页面与 ralsei无任何关系 如需查看请访问[deltarune.wiki](https://deltarune.wiki/) :::
+
 # 关于本站
 
 Liang Wiki 存放自己写的维基
